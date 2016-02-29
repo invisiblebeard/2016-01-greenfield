@@ -38,7 +38,8 @@ io.on('connection', function (socket) {
 
   socket.on('setUser', function (username) {
     users[socket.id] = username;
-    io.sockets.connected[socket.id].emit('usernamewindow', username)
+    io.sockets.connected[socket.id].emit('usernamewindow', username);
+    io.emit('messageSent', {username: "", message: users[socket.id] + " has joined."});
     io.emit('onlineusers', users)
   });
 
@@ -159,6 +160,11 @@ io.on('connection', function (socket) {
     delete users[socket.id];
     io.emit('onlineusers', users)
     io.emit('changeVote', {up: upvotes, down: downvotes});
+<<<<<<< Updated upstream
+=======
+    io.emit('messageSent', {username: "", message: users[socket.id] + " has left."});
+    delete users[socket.id];
+>>>>>>> Stashed changes
   });
 
   socket.on('upVote', function(){
