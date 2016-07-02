@@ -126,12 +126,21 @@ angular.module('chat', ['ngSanitize'])
         tags.shift();
         $scope.getGif(tags, function(url) {
           $scope.getCurrentTime();
-          $rootScope.socket.emit('sendMessage', {
-            message: message + ' ▽',
-            username: $scope.username,
-            url: url,
-            time: $scope.time
-          })
+          if (url === undefined) {
+            $scope.getCurrentTime();
+            $rootScope.socket.emit('sendMessage', {
+              message: 'Gif for ' + tags + 'not found.',
+              username: 'playbot',
+              time: $scope.time
+            });
+          } else {
+            $rootScope.socket.emit('sendMessage', {
+              message: message + ' ▽',
+              username: $scope.username,
+              url: url,
+              time: $scope.time
+            })
+          }
         })
       } else if (message.indexOf('/peel') !== -1) {
         var tags = message.split(' ');
@@ -140,7 +149,7 @@ angular.module('chat', ['ngSanitize'])
           if (url === undefined) {
             $scope.getCurrentTime();
             $rootScope.socket.emit('sendMessage', {
-              message: 'Sticker not found, try again.',
+              message: 'Sticker for ' + tags + 'not found.',
               username: 'playbot',
               time: $scope.time
             });
