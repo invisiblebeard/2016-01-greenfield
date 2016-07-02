@@ -160,7 +160,7 @@ angular.module('chat', ['ngSanitize'])
           "OPTIONS: \n" +
           "›› /help : display  the list of commands \n" +
           "›› /clear : clear the chat window \n" +
-          "›› /seek [seconds] : skip video forwad in seconds" +
+          "›› /seek [seconds] : skip video forwards \n" +
           "›› /gif [tags] : display a random gif \n" +
           "     i.e.  /gif wu tang clan \n" +
           "›› /peel [tags] : display a random sticker \n" +
