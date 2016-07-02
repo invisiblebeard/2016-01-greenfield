@@ -158,7 +158,7 @@ angular.module('chat', ['ngSanitize'])
 
         var lines =
           "OPTIONS: \n" +
-          "›› /help : display  the list of commands \n" +
+          "›› /help : display the list of commands \n" +
           "›› /clear : clear the chat window \n" +
           "›› /seek [seconds] : skip video forwards \n" +
           "›› /gif [tags] : display a random gif \n" +
