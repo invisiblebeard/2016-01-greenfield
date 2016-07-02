@@ -18,6 +18,7 @@ angular.module('search', ['ngAnimate'])
       scope.hideResults = function() {
         $rootScope.noResults = false;
         scope.show = false;
+        $rootScope.loadResults = false;
       }
     },
     transclude: true,
@@ -52,6 +53,9 @@ angular.module('search', ['ngAnimate'])
     $scope.showResults = !$scope.showResults;
     if ($rootScope.noResults === true) {
       $rootScope.noResults = false;
+    }
+    if ($rootScope.loadResults === true) {
+      $rootScope.loadResults = false;
     }
     $scope.searchList = undefined;
     if ($scope.showResults === true) {
