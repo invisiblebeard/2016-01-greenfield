@@ -15,7 +15,7 @@
     <link rel="stylesheet" type="text/css" href="./css/styles.css">
     <base href="/"></base>
   </head>
-  <body ng-controller="YouTubeController"> 
+  <body ng-controller="YouTubeController" onmousedown="event.preventDefault ? event.preventDefault() : event.returnValue = false"> 
     <div id="interface"> 
       <div id="dropzone">
       <img id="dropicon" src=./img/dragicon.png>
