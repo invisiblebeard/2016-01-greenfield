@@ -129,7 +129,7 @@ angular.module('chat', ['ngSanitize'])
           if (url === undefined) {
             $scope.getCurrentTime();
             $rootScope.socket.emit('sendMessage', {
-              message: 'Gif for ' + tags + 'not found.',
+              message: 'Gif for ' + tags + ' not found.',
               username: 'playbot',
               time: $scope.time
             });
@@ -149,7 +149,7 @@ angular.module('chat', ['ngSanitize'])
           if (url === undefined) {
             $scope.getCurrentTime();
             $rootScope.socket.emit('sendMessage', {
-              message: 'Sticker for ' + tags + 'not found.',
+              message: 'Sticker for ' + tags + ' not found.',
               username: 'playbot',
               time: $scope.time
             });
