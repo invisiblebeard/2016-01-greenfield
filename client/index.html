@@ -28,7 +28,7 @@
       </div>   
     <header>
       <img src="./img/logo.png" id="logo-image" ng-cloak>
-      <form id="search" ng-submit="searchQuery(); toggleResults()" ng-controller="SearchController">
+      <form id="search" ng-submit="searchQuery()" ng-controller="SearchController">
         <input id="search-input" ng-model="field" type="text" placeholder="Search" autocomplete="off" ng-cloak>
         <input id="search-submit" type="image" src="./img/search.png" ng-cloak> 
         <img id="engine-icon" ng-src={{image}} ng-click="toggleIcon()">

@@ -36,7 +36,8 @@ angular.module('search', ['ngAnimate'])
   $scope.image = './img/soundcloud.png';
   $scope.yt = './img/yt.jpg';
   $scope.sc = '/img/sc.jpg';
-  $scope.shown = false;
+  $scope.noResults = false;
+  $scope.showResults = false;
 
   $scope.toggleIcon = function() {
     if ($scope.image === './img/soundcloud.png') {
@@ -47,8 +48,12 @@ angular.module('search', ['ngAnimate'])
   }
 
   $scope.searchQuery = function() {
+    $scope.showResults = !$scope.showResults;
+    if ($rootScope.noResults === true) {
+      $rootScope.noResults = false;
+    }
     $scope.searchList = undefined;
-    if ($scope.shown === false) {
+    if ($scope.showResults === true) {
       if ($scope.image === './img/soundcloud.png') {
         $scope.getSound();
       } else {
@@ -116,15 +121,10 @@ angular.module('search', ['ngAnimate'])
     };
   };
 
-  $scope.showResults = false;
+  //$scope.showResults = false;
 
   //Toggles the modal view
   $scope.toggleResults = function() {
-    $scope.shown = !$scope.shown;
-    $scope.showResults = !$scope.showResults;
-    if ($rootScope.noResults === true) {
-      $rootScope.noResults = false;
-    }
   };
 
 }])
