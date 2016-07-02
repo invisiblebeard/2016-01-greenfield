@@ -160,6 +160,7 @@ angular.module('chat', ['ngSanitize'])
           "OPTIONS: \n" +
           "›› /help : display  the list of commands \n" +
           "›› /clear : clear the chat window \n" +
+          "›› /seek [seconds] : skip video forwad in seconds" +
           "›› /gif [tags] : display a random gif \n" +
           "     i.e.  /gif wu tang clan \n" +
           "›› /peel [tags] : display a random sticker \n" +
@@ -229,6 +230,24 @@ angular.module('chat', ['ngSanitize'])
       $scope.usersConnected = Object.keys(users).length;
     });
   });
+
+  $rootScope.socket.on('cannotSeek', function(youtube) {
+    if (youtube) {
+      var helpMessage = {
+        username: 'playbot',
+        time: $scope.time,
+        message: "Seeking is disabled. You did not upload this video."
+      }
+      $scope.messages.push(helpMessage);
+    } else {
+      var helpMessage = {
+        username: 'playbot',
+        time: $scope.time,
+        message: "Seeking is disabled. A video is not currently playing."
+      }
+      $scope.messages.push(helpMessage);
+    }
+  })
 
 }])
 

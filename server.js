@@ -272,9 +272,11 @@ io.on('connection', function(socket) {
 
   socket.on('seekForward', function(seconds) {
     var id = socket.id;
-    if (current && id.slice(2) === current.socket) {
+    if (current && current.type === 'youtube' && id.slice(2) === current.socket) {
       timeLeft -= seconds;
       io.emit('seekForward', seconds);
+    } else {
+      io.sockets.connected[socket.id].emit('cannotSeek', current.type);
     }
   })
 
