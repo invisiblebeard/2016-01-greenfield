@@ -38,6 +38,7 @@ angular.module('search', ['ngAnimate'])
   $scope.sc = '/img/sc.jpg';
   $scope.noResults = false;
   $scope.showResults = false;
+  $rootScope.loadResults = false;
 
   $scope.toggleIcon = function() {
     if ($scope.image === './img/soundcloud.png') {
@@ -54,6 +55,7 @@ angular.module('search', ['ngAnimate'])
     }
     $scope.searchList = undefined;
     if ($scope.showResults === true) {
+      $rootScope.loadResults = true;
       if ($scope.image === './img/soundcloud.png') {
         $scope.getSound();
       } else {
@@ -65,6 +67,7 @@ angular.module('search', ['ngAnimate'])
   //Retrieve and populate scope with YouTube search results
   $scope.getSearch = function() {
     SearchFactory.fetchSearch($scope.field, function(results) {
+      $rootScope.loadResults = false;
       if (results.data.items.length === 0) {
         $rootScope.noResults = true;
       } else {
@@ -76,6 +79,7 @@ angular.module('search', ['ngAnimate'])
 
   $scope.getSound = function() {
     SearchFactory.fetchSound($scope.field).then(function(results) {
+      $rootScope.loadResults = false;
       if (results === null) {
         $rootScope.noResults = true;
       } else {

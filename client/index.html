@@ -23,8 +23,9 @@
           <input type="file" name="file" id="file" accept=".mp3,audio/*"> 
         </form>  
       </div>
-      <div class="no-results" ng-show="noResults">
-        <img id="no-results" ng-cloak src="./img/noresults.png">
+      <div class="no-results">
+        <img ng-show="loadResults" id="loading-results" ng-cloak src="./img/loading_dots.gif">
+        <img ng-show="noResults" id="no-results" ng-cloak src="./img/noresults.png">
       </div>   
     <header>
       <img src="./img/logo.png" id="logo-image" ng-cloak>
