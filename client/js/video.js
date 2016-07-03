@@ -108,6 +108,11 @@ angular.module('app', ['chat', 'search'])
       },
       onError: function(error) {
         console.log(error);
+        $rootScope.$emit('wrongFile');
+        if(event.target === lastTarget) {
+          document.getElementById('dropzone').style.visibility = 'hidden';
+          document.getElementById('dropicon').src="./img/dragicon.png"
+        }
       }
     });
   })

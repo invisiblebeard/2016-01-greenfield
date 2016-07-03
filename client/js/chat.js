@@ -258,6 +258,17 @@ angular.module('chat', ['ngSanitize'])
     }
   })
 
+  $rootScope.$on('wrongFile', function() {
+    var helpMessage = {
+      username: 'playbot',
+      time: $scope.time,
+      message: "Error uploading file. You can only upload MP3 files."
+    }
+    $scope.$evalAsync(function() {
+      $scope.messages.push(helpMessage);
+    })
+  })
+
 }])
 
 .factory('GifFactory', ['$http', '$q', function($http, $q) {
