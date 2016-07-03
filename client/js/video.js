@@ -32,6 +32,8 @@ angular.module('app', ['chat', 'search'])
         $rootScope.username = username.toLowerCase() || 'anonymous';
         $rootScope.socket.emit('username', $rootScope.username);
       });
+    } else {
+      $rootScope.socket.emit('reconnected', $rootScope.username);
     }
   });
 

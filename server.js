@@ -159,6 +159,13 @@ io.on('connection', function(socket) {
     io.sockets.connected[socket.id].emit('setQueue', queue);
   });
 
+  socket.on('reconnected', function(username) {
+    users[socket.id] = username;
+    io.sockets.connected[socket.id].emit('setUser', username);
+    io.sockets.connected[socket.id].emit('setId', socket.id);
+    io.emit('usersOnline', users);
+  });
+
   //Sends queue information to client
   socket.on('getQueue', function() {
     if (queue.length) {
