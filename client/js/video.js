@@ -80,7 +80,7 @@ angular.module('app', ['chat', 'search'])
             $rootScope.socket.emit('enqueue', { 
               id: file.name + $rootScope.socket.id,
               title: title,
-              thumbnail: image,
+              cover: image,
               username: $rootScope.username,
               socket: $rootScope.socket.id, 
               duration: null,
@@ -127,6 +127,7 @@ angular.module('app', ['chat', 'search'])
   this.volume = .5;
   this.source = null;
   this.audio = new AudioContext();
+  this.source = this.audio.createBufferSource();
   this.gain = this.audio.createGain();
   this.analyser = this.audio.createAnalyser();
   this.gain.connect(this.analyser);
@@ -226,7 +227,9 @@ angular.module('app', ['chat', 'search'])
         $rootScope.$emit('showTube');
         player.loadVideoById(video.id);
       } else if (video.type === 'upload') {
-        context.source = context.audio.createBufferSource();
+        $('#album-artwork').css("background-image", "url("+ video.cover +")");
+        $('#cover').attr('src', video.cover);
+        $rootScope.$emit('showArtwork');
         context.audio.decodeAudioData(video.file, function(decoded) {
           context.decoded = decoded;
           $rootScope.socket.emit('getDuration');
@@ -322,7 +325,9 @@ angular.module('app', ['chat', 'search'])
       $rootScope.$emit('changeQueue');
       $rootScope.socket.emit('setDuration', {duration: video.duration, sc: false});
     } else if (video.type === 'upload') {
-      $rootScope.$emit('placeHodor');
+      $('#album-artwork').css("background-image", "url("+ video.cover +")");
+      $('#cover').attr('src', video.cover);
+      $rootScope.$emit('showArtwork');
       player.stopVideo();
       widget.pause();
       context.source = context.audio.createBufferSource();
@@ -418,6 +423,7 @@ angular.module('app', ['chat', 'search'])
   $scope.downvotes = 0;
   $scope.widget = false;
   $scope.tube = false;
+  $scope.artwork = false;
 
   //Recieve client socket id from server
   $rootScope.socket.on('setId',function(socketId) {
@@ -433,6 +439,7 @@ angular.module('app', ['chat', 'search'])
     $scope.$evalAsync(function() {
       $scope.widget = false;
       $scope.tube = true;
+      $scope.artwork = false;
     });
   });
 
@@ -440,12 +447,22 @@ angular.module('app', ['chat', 'search'])
     $scope.$evalAsync(function() {
       $scope.widget = true;
       $scope.tube = false;
+      $scope.artwork = false;
+    });
+  });
+
+  $rootScope.$on('showArtwork', function() {
+    $scope.$evalAsync(function() {
+      $scope.widget = false;
+      $scope.tube = false;
+      $scope.artwork = true;
     });
   });
 
   $rootScope.$on('placeHodor', function() {
     $scope.widget = false;
     $scope.tube = false;
+    $scope.artwork = false;
   });
 
   //Receives time remaining from service, creates a clock interval and update duration in scope
