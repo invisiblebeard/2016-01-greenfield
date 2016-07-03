@@ -1,7 +1,7 @@
 angular.module('app', ['chat', 'search'])
 
 //Load YouTube iFrame API, connect socket to server, prompt for username on initialize
-.run(function($rootScope) {
+.run(function($rootScope, $q) {
   var tag = document.createElement('script');
 
   tag.src = 'https://www.youtube.com/iframe_api';
@@ -37,6 +37,14 @@ angular.module('app', ['chat', 'search'])
 
   var lastTarget = null;
 
+  var getImageSource = function(image, done) {
+    var base64String = "";
+    for (var j = 0; j < image.data.length; j++) {
+      base64String += String.fromCharCode(image.data[j]);
+    }
+    done("data:" + image.format + ";base64," + window.btoa(base64String));
+  }
+
   window.addEventListener('dragenter', function(event) {
     lastTarget = event.target;
     document.getElementById('dropzone').style.visibility = 'visible';
@@ -64,20 +72,30 @@ angular.module('app', ['chat', 'search'])
 
     var key = file.name + $rootScope.socket.id;
 
-    $rootScope.socket.emit('upload', {key: key, file: file}, function(name) {
-      $rootScope.socket.emit('enqueue', { 
-        id: file.name + $rootScope.socket.id,
-        title: file.name,
-        thumbnail: null,
-        username: $rootScope.username,
-        socket: $rootScope.socket.id, 
-        duration: null,
-        type: 'upload',
-        file: null
-      });
-      if(event.target === lastTarget) {
-        document.getElementById('dropzone').style.visibility = 'hidden';
-        document.getElementById('dropicon').src="./img/dragicon.png"
+    jsmediatags.read(file, {
+      onSuccess: function(information) {
+        var title = information.tags.artist + " - " + information.tags.title;
+        getImageSource(information.tags.picture, function(image) {
+          $rootScope.socket.emit('upload', {key: key, file: file}, function(name) {
+            $rootScope.socket.emit('enqueue', { 
+              id: file.name + $rootScope.socket.id,
+              title: title,
+              thumbnail: image,
+              username: $rootScope.username,
+              socket: $rootScope.socket.id, 
+              duration: null,
+              type: 'upload',
+              file: null
+            });
+            if(event.target === lastTarget) {
+              document.getElementById('dropzone').style.visibility = 'hidden';
+              document.getElementById('dropicon').src="./img/dragicon.png"
+            }
+          });
+        })
+      },
+      onError: function(error) {
+        console.log(error);
       }
     });
   })
@@ -110,6 +128,8 @@ angular.module('app', ['chat', 'search'])
   this.source = null;
   this.audio = new AudioContext();
   this.gain = this.audio.createGain();
+  this.analyser = this.audio.createAnalyser();
+  this.gain.connect(this.analyser);
   this.gain.connect(this.audio.destination);
   this.gain.gain.value = 0.5;
   this.decoded;
