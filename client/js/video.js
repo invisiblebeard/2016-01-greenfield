@@ -238,10 +238,10 @@ angular.module('app', ['chat', 'search'])
         player.loadVideoById(video.id);
       } else if (video.type === 'upload') {
         if (video.cover === null) {
-          $('#album-artwork').css("background-image", "url(./img/unknownbg.jpg)");
+          $('#cover-background').css("background-image", "url(./img/unknownbg.jpg)");
           $('#cover').attr('src', './img/unknown.png');
         } else {
-          $('#album-artwork').css("background-image", "url("+ video.cover +")");
+          $('#cover-background').css("background-image", "url("+ video.cover +")");
           $('#cover').attr('src', video.cover);
         }
         $rootScope.$emit('showArtwork');
@@ -341,10 +341,10 @@ angular.module('app', ['chat', 'search'])
       $rootScope.socket.emit('setDuration', {duration: video.duration, sc: false});
     } else if (video.type === 'upload') {
       if (video.cover === null) {
-        $('#album-artwork').css("background-image", "url(./img/unknownbg.jpg)");
+        $('#cover-background').css("background-image", "url(./img/unknownbg.jpg)");
         $('#cover').attr('src', './img/unknown.png');
       } else {
-        $('#album-artwork').css("background-image", "url("+ video.cover +")");
+        $('#cover-background').css("background-image", "url("+ video.cover +")");
         $('#cover').attr('src', video.cover);
       }
       $rootScope.$emit('showArtwork');
