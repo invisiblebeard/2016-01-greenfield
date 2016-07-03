@@ -38,6 +38,9 @@ angular.module('app', ['chat', 'search'])
   var lastTarget = null;
 
   var getImageSource = function(image, done) {
+    if(!image) {
+      return done(null);
+    }
     var base64String = "";
     for (var j = 0; j < image.data.length; j++) {
       base64String += String.fromCharCode(image.data[j]);
@@ -74,7 +77,14 @@ angular.module('app', ['chat', 'search'])
 
     jsmediatags.read(file, {
       onSuccess: function(information) {
-        var title = information.tags.artist + " - " + information.tags.title;
+        var title;
+
+        if (information.tags.artist && information.tags.title) {
+          title = information.tags.artist + " - " + information.tags.title;
+        } else {
+          title = file.name;
+        }
+    
         getImageSource(information.tags.picture, function(image) {
           $rootScope.socket.emit('upload', {key: key, file: file}, function(name) {
             $rootScope.socket.emit('enqueue', { 
@@ -227,8 +237,13 @@ angular.module('app', ['chat', 'search'])
         $rootScope.$emit('showTube');
         player.loadVideoById(video.id);
       } else if (video.type === 'upload') {
-        $('#album-artwork').css("background-image", "url("+ video.cover +")");
-        $('#cover').attr('src', video.cover);
+        if (video.cover === null) {
+          $('#album-artwork').css("background-image", "url(./img/unknownbg.jpg)");
+          $('#cover').attr('src', './img/unknown.png');
+        } else {
+          $('#album-artwork').css("background-image", "url("+ video.cover +")");
+          $('#cover').attr('src', video.cover);
+        }
         $rootScope.$emit('showArtwork');
         context.audio.decodeAudioData(video.file, function(decoded) {
           context.decoded = decoded;
@@ -325,8 +340,13 @@ angular.module('app', ['chat', 'search'])
       $rootScope.$emit('changeQueue');
       $rootScope.socket.emit('setDuration', {duration: video.duration, sc: false});
     } else if (video.type === 'upload') {
-      $('#album-artwork').css("background-image", "url("+ video.cover +")");
-      $('#cover').attr('src', video.cover);
+      if (video.cover === null) {
+        $('#album-artwork').css("background-image", "url(./img/unknownbg.jpg)");
+        $('#cover').attr('src', './img/unknown.png');
+      } else {
+        $('#album-artwork').css("background-image", "url("+ video.cover +")");
+        $('#cover').attr('src', video.cover);
+      }
       $rootScope.$emit('showArtwork');
       player.stopVideo();
       widget.pause();

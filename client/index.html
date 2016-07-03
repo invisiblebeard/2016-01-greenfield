@@ -58,7 +58,7 @@
       <div id="player-queue">
         <div id="place-overlay" ng-show="!widget === !tube && !artwork"></div>
         <div id="place-holder" ng-show="!widget === !tube && !artwork"></div>
-        <div id="album-artwork" ng-show="artwork">
+        <div id="album-artwork" ng-cloak ng-show="artwork">
           <img id="cover" src="">
         </div>
         <div ng-show="tube">
