@@ -12,7 +12,7 @@ angular.module('app', ['chat', 'search'])
   $rootScope.socket = io.connect();
 
   SC.initialize({
-    client_id: "376f225bf427445fc4bfb6b99b72e0bf"
+    client_id: "2t9loNQH90kzJcsFCODdigxfp325aq4z"
   });
 
   $rootScope.socket.on('connect', function() {
